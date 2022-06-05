@@ -5,6 +5,24 @@ void Sets::remove()
 	delete[] variety;
 }
 
+bool Sets::unique(int a)
+{
+	int counter = 0;
+	bool flag = true;
+	for (int i = 0; i < size; i++) {
+		if (variety[i] == a) {
+			counter++;
+		}
+	}
+	if (counter) {
+		flag = false;
+	}
+	else {
+		flag = true;
+	}
+	return flag;
+}
+
 Sets::Sets(int size, int* arr)
 {
 	this->size = size;
@@ -12,6 +30,12 @@ Sets::Sets(int size, int* arr)
 	for (int i = 0; i < size; i++) {
 		this->variety[i] = arr[i];
 	}
+}
+
+Sets::Sets(int size)
+{
+	this->size = size;
+	variety = new int[size];
 }
 
 Sets::Sets()
@@ -25,12 +49,23 @@ Sets::~Sets()
 	remove();
 }
 
-void Sets::print()
+Sets& Sets::add(int a)
 {
-	for (int i = 0; i < size; i++) {
-		cout << variety[i] << " ";
+	if (unique(a)) {
+		int* temp = new int[size];
+		for (int i = 0; i < size; i++) {
+			temp[i] = variety[i];
+		}
+		remove();
+		size++;
+		variety = new int[size];
+		for (int i = 0; i < size - 1; i++) {
+			variety[i] = temp[i];
+		}
+		variety[size - 1] = a;
+		delete[]temp;
 	}
-	cout << endl;
+	return *this;
 }
 
 ostream& operator<<(ostream& output, const Sets& a)
@@ -43,11 +78,11 @@ ostream& operator<<(ostream& output, const Sets& a)
 	return output;
 }
 
-istream& operator>>(istream& input, const Sets& a)
+istream& operator>>(istream& input, Sets& a)
 {
-	
-	for (size_t i{ 0 }; i < a.size; ++i) {
-		input >> a.variety[i];
-	}
+	int i;
+	input >> i;
+	a.add(i);
+
 	return input;
 }

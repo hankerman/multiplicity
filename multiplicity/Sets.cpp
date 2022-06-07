@@ -44,12 +44,23 @@ Sets::Sets()
 	variety = nullptr;
 }
 
-Sets::~Sets()
+Sets::Sets(const Sets& other)
 {
-	remove();
+
+	this->size = other.size;
+	this->variety = new int[size];
+	for (int i = 0; i < size; i++) {
+		this->variety[i] = other.variety[i];
+	}
+
 }
 
-Sets& Sets::add(int a)
+Sets::~Sets()
+{
+	remove();		
+}
+
+Sets& Sets::add(const int a)
 {
 	if (unique(a)) {
 		int* temp = new int[size];
@@ -83,6 +94,12 @@ istream& operator>>(istream& input, Sets& a)
 	int i;
 	input >> i;
 	a.add(i);
-
 	return input;
+}
+
+const Sets operator+(const Sets& a, int i)
+{
+	Sets temp(a);
+	temp.add(i);
+	return temp;
 }

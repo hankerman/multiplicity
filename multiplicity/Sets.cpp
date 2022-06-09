@@ -152,3 +152,59 @@ Sets& operator-(Sets& a, int i)
 	a.del(i);
 	return a;
 }
+
+bool operator==(const Sets& a, const Sets& b)
+{
+	bool flag = true;
+	int cont = 0;
+	if (a.size == b.size) {
+		for (int i = 0; i < a.size; i++) {
+			for (int j = 0; j < b.size; j++) {
+				if (a.variety[i] == b.variety[j]) {
+					cont++;
+				}
+			}
+		}
+		if (cont == 0) {
+			flag = false;
+		}
+		else if (cont == a.size) {
+			flag = true;
+		}
+		else {
+			flag = false;
+		}
+	}
+	else {
+		flag = false;
+	}
+	return flag;
+}
+
+bool operator!=(const Sets& a, const Sets& b)
+{
+	bool flag = false;
+	int cont = 0;
+	if (a.size == b.size) {
+		for (int i = 0; i < a.size; i++) {
+			for (int j = 0; j < b.size; j++) {
+				if (a.variety[i] == b.variety[j]) {
+					cont++;
+				}
+			}
+		}
+		if (cont == 0) {
+			flag = true;
+		}
+		else if (cont == a.size) {
+			flag = false;
+		}
+		else {
+			flag = true;
+		}
+	}
+	else {
+		flag = true;
+	}
+	return flag;
+}

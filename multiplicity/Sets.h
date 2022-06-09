@@ -24,6 +24,9 @@ public:
 	friend Sets& operator+=(Sets& a, int i);
 	friend Sets& operator-=(Sets& a, int i);
 	friend Sets& operator-(Sets& a, int i);
+	friend bool operator==(const Sets& a, const Sets& b);
+	friend bool operator!=(const Sets& a, const Sets& b);
+
 	
 };
 

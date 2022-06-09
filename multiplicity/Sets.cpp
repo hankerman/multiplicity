@@ -60,13 +60,13 @@ Sets::~Sets()
 	remove();		
 }
 
-Sets& Sets::add(const int a)
+Sets& Sets::add(int a)
 {
 	if (unique(a)) {
 		int* temp = new int[size];
 		for (int i = 0; i < size; i++) {
 			temp[i] = variety[i];
-		}
+		}		
 		remove();
 		size++;
 		variety = new int[size];
@@ -75,6 +75,37 @@ Sets& Sets::add(const int a)
 		}
 		variety[size - 1] = a;
 		delete[]temp;
+	}
+	return *this;
+}
+
+Sets& Sets::del(int a)
+{
+	int count_del = 0;
+	int* temp = new int[size];
+	for (int i = 0; i < size; i++) {
+		temp[i] = variety[i];
+	}
+	remove();
+	for (int i = 0; i < size; i++) {
+		if (temp[i] == a) {
+			break;
+		}
+		else {
+			count_del++;
+		}
+	}
+	if (count_del != 0) {
+		size--;
+		variety = new int[size];
+		for (int i = 0; i < size; i++) {
+			if (i < count_del) {
+				variety[i] = temp[i];
+			}
+			else {
+				variety[i] = temp[i + 1];
+			}
+		}
 	}
 	return *this;
 }
@@ -97,9 +128,27 @@ istream& operator>>(istream& input, Sets& a)
 	return input;
 }
 
-const Sets operator+(const Sets& a, int i)
+Sets& operator+(Sets& a, int i)
 {
-	Sets temp(a);
-	temp.add(i);
-	return temp;
+	
+	a.add(i);
+	return a;
+}
+
+Sets& operator+=(Sets& a, int i)
+{
+	a.add(i);
+	return a;
+}
+
+Sets& operator-=(Sets& a, int i)
+{
+	a.del(i);
+	return a;
+}
+
+Sets& operator-(Sets& a, int i)
+{
+	a.del(i);
+	return a;
 }

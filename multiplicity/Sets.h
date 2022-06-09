@@ -16,10 +16,14 @@ public:
 	Sets();
 	Sets(const Sets& other);
 	~Sets();
-	Sets& add(const int a);
+	Sets& add(int a);
+	Sets& del(int a);
 	friend ostream& operator<<(ostream&, const Sets& a);
 	friend istream& operator>>(istream&, Sets& a);
-	friend const Sets operator+(const Sets& a, int i);
-
+	friend Sets& operator+(Sets& a, int i);
+	friend Sets& operator+=(Sets& a, int i);
+	friend Sets& operator-=(Sets& a, int i);
+	friend Sets& operator-(Sets& a, int i);
+	
 };
 

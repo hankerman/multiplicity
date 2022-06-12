@@ -23,6 +23,16 @@ bool Sets::unique(int a)
 	return flag;
 }
 
+bool Sets::chek_variety(int a)
+{
+	for (int i = 0; i < size; i++) {
+		if (a == variety[i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 Sets::Sets(int size, int* arr)
 {
 	this->size = size;
@@ -81,31 +91,41 @@ Sets& Sets::add(int a)
 
 Sets& Sets::del(int a)
 {
-	int count_del = 0;
-	int* temp = new int[size];
-	for (int i = 0; i < size; i++) {
-		temp[i] = variety[i];
-	}
-	remove();
-	for (int i = 0; i < size; i++) {
-		if (temp[i] == a) {
-			break;
-		}
-		else {
-			count_del++;
-		}
-	}
-	if (count_del != 0) {
-		size--;
-		variety = new int[size];
+	bool chek_a = false;
+	if (chek_variety(a)) {		
+		int* temp = new int[size];
 		for (int i = 0; i < size; i++) {
-			if (i < count_del) {
-				variety[i] = temp[i];
+			temp[i] = variety[i];			
+		}
+		remove();
+		this->size--;
+		this->variety = new int[size];
+		for (int i = 0, j = 1; i < size; i++, j++) {
+			if (temp[i] == a) {
+				chek_a = true;
+			}
+			if (chek_a) {
+				variety[i] = temp[j];
 			}
 			else {
-				variety[i] = temp[i + 1];
+				variety[i] = temp[i];
 			}
 		}
+		delete[]temp;
+	}
+	return *this;
+}
+
+Sets& Sets::operator=(const Sets& a)
+{
+	if (this == &a) {
+		return *this;
+	}
+	remove();
+	this->size = a.size;
+	this->variety = new int[size];
+	for (int i = 0; i < size; i++) {
+		variety[i] = a.variety[i];
 	}
 	return *this;
 }
@@ -129,8 +149,7 @@ istream& operator>>(istream& input, Sets& a)
 }
 
 Sets& operator+(Sets& a, int i)
-{
-	
+{	
 	a.add(i);
 	return a;
 }
@@ -141,9 +160,33 @@ Sets& operator+=(Sets& a, int i)
 	return a;
 }
 
+Sets& operator+=(Sets& a, Sets& b)
+{
+	for (int i = 0; i < b.size; i++) {
+		a.add(b.variety[i]);
+	}
+	return a;
+}
+
+Sets& operator+(Sets& a, Sets& b)
+{
+	for (int i = 0; i < b.size; i++) {
+		a.add(b.variety[i]);
+	}
+	return a;
+}
+
 Sets& operator-=(Sets& a, int i)
 {
 	a.del(i);
+	return a;
+}
+
+Sets& operator-=(Sets& a, Sets& b)
+{
+	for (int i = 0; i < b.size; i++) {
+		a.del(b.variety[i]);
+	}
 	return a;
 }
 
@@ -207,4 +250,50 @@ bool operator!=(const Sets& a, const Sets& b)
 		flag = true;
 	}
 	return flag;
+}
+
+Sets& operator*(Sets& a, Sets& b)
+{
+	int counSize = 0, size2 = a.size > b.size ? a.size : b.size, t = 0;
+	int* temp = new int[size2];
+	for (int i = 0; i < a.size; i++) {
+		for (int j = 0; j < b.size; j++) {
+			if (a.variety[i] == b.variety[j]) {
+				temp[t] = a.variety[i];
+				t++;
+				counSize++;
+			}
+		}
+	}
+	delete[]a.variety;
+	a.size = counSize;
+	a.variety = new int[a.size];
+	for (int i = 0; i < a.size; i++) {
+		a.variety[i] = temp[i];
+	}
+	delete[]temp;
+	return a;
+}
+
+Sets& operator*=(Sets& a, Sets& b)
+{
+	int counSize = 0, size2 = a.size > b.size ? a.size : b.size, t = 0;
+	int* temp = new int[size2];
+	for (int i = 0; i < a.size; i++) {
+		for (int j = 0; j < b.size; j++) {
+			if (a.variety[i] == b.variety[j]) {
+				temp[t] = a.variety[i];
+				t++;
+				counSize++;
+			}
+		}
+	}
+	delete[]a.variety;
+	a.size = counSize;
+	a.variety = new int[a.size];
+	for (int i = 0; i < a.size; i++) {
+		a.variety[i] = temp[i];
+	}
+	delete[]temp;
+	return a;
 }

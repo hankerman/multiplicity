@@ -9,6 +9,7 @@ private:
 	int* variety;
 	void remove();	
 	bool unique(int a);
+	bool chek_variety(int a);
 
 public:
 	Sets(int size, int* arr);
@@ -20,13 +21,18 @@ public:
 	Sets& del(int a);
 	friend ostream& operator<<(ostream&, const Sets& a);
 	friend istream& operator>>(istream&, Sets& a);
-	friend Sets& operator+(Sets& a, int i);
+	friend Sets& operator+(Sets& a, int i);	
 	friend Sets& operator+=(Sets& a, int i);
+	friend Sets& operator+=(Sets& a, Sets& b);
+	friend Sets& operator+(Sets& a, Sets& b);
 	friend Sets& operator-=(Sets& a, int i);
+	friend Sets& operator-=(Sets& a, Sets& b);
 	friend Sets& operator-(Sets& a, int i);
+	Sets& operator=(const Sets& a);
 	friend bool operator==(const Sets& a, const Sets& b);
 	friend bool operator!=(const Sets& a, const Sets& b);
-
+	friend Sets& operator*(Sets& a, Sets& b);
+	friend Sets& operator*=(Sets& a, Sets& b);
 	
 };
 
